@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import backgroundSigIn from '../../assets/Sigin.jpg';
+import backgroundSigUp from '../../assets/sigup.jpg';
 import { shade } from 'polished';
 
 export const Container = styled.div`
@@ -69,6 +69,6 @@ export const Content = styled.div`
 
 export const Background = styled.div`
     flex: 1;
-    background: url(${backgroundSigIn}) no-repeat center;
+    background: url(${backgroundSigUp}) no-repeat center;
     background-size: cover;
 `;
