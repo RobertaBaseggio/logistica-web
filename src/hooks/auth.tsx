@@ -1,5 +1,5 @@
-import React, {createContext, useCallback, useState} from "react";
-import api from '.././components/service/api';
+import React, {createContext, useCallback, useState, useContext} from "react";
+import api from '../components/service/api';
 
 interface AuthState{
     jwt: string;
@@ -12,9 +12,10 @@ interface SignInCredentials{
 
 interface AuthContextData{
     signIn(credentials : SignInCredentials): Promise<void>;
+    signOut(): void;
 }
 
-export const AuthContext = createContext<AuthContextData>(
+const AuthContext = createContext<AuthContextData>(
     {} as AuthContextData
 );
 
@@ -40,10 +41,26 @@ export const AuthProvider: React.FC = ({children}) =>{
         setData(jwt);
 
     }, []);
+
+    const signOut = useCallback(() => {
+        localStorage.removeItem("@Logistica:token");
+
+        setData({} as AuthState);
+    }, []);
     
     return (
-        <AuthContext.Provider value={{signIn}}>
+        <AuthContext.Provider value={{signIn, signOut}}>
             {children}
         </AuthContext.Provider>
     );
+};
+
+export function useAuth(): AuthContextData{
+    const context = useContext(AuthContext);
+    
+    if(!context){
+        throw new Error('useAuth must be used withing an AuthProvider');
+    }
+
+    return context;
 }
